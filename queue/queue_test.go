@@ -1,7 +1,6 @@
 package queue
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/require"
 	"strings"
 	"testing"
@@ -61,14 +60,14 @@ func testRemove(t *testing.T) {
 	_ = q.Remove()
 	item, err := q.Peek()
 	require.Equal(t, nil, item)
-	require.Error(t, fmt.Errorf("empty queue"), err)
+	require.Error(t, ErrorEmpty, err)
 }
 
 func testPeek(t *testing.T) {
 	q := Queue{}
 
 	item, err := q.Peek()
-	require.Error(t, fmt.Errorf("empty queue"), err)
+	require.Error(t, ErrorEmpty, err)
 	require.Equal(t, nil, item)
 
 	q.Add("test")
