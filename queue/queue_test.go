@@ -80,7 +80,7 @@ func testPeek(t *testing.T) {
 	item, err = q.Peek()
 	require.NoError(t, nil)
 	require.Equal(t, "test", item)
-	//queue: test,100
+
 	item, err = q.Remove()
 	require.NoError(t, nil)
 	require.Equal(t, "test", item)
