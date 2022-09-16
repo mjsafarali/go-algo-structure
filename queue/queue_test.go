@@ -20,6 +20,8 @@ func TestQueue(t *testing.T) {
 
 func testLen(t *testing.T) {
 	q := Queue{}
+	var item interface{}
+
 	require.Equal(t, 0, q.Len())
 
 	q.Add(123)
@@ -34,8 +36,9 @@ func testLen(t *testing.T) {
 	_, _ = q.Peek()
 	require.Equal(t, 3, q.Len())
 
-	_ = q.Remove()
+	item, _ = q.Remove()
 	require.Equal(t, 2, q.Len())
+	require.Equal(t, 123, item)
 }
 
 func testRemove(t *testing.T) {
@@ -49,17 +52,16 @@ func testRemove(t *testing.T) {
 	item, _ = q.Peek()
 	require.Equal(t, 1, item)
 
-	_ = q.Remove()
-	item, _ = q.Peek()
+	item, _ = q.Remove()
+	require.Equal(t, 1, item)
+
+	item, _ = q.Remove()
 	require.Equal(t, 2, item)
 
-	_ = q.Remove()
-	item, _ = q.Peek()
+	item, _ = q.Remove()
 	require.Equal(t, 3, item)
 
-	_ = q.Remove()
-	item, err := q.Peek()
-	require.Equal(t, nil, item)
+	item, err := q.Remove()
 	require.Error(t, ErrorEmpty, err)
 }
 
@@ -68,22 +70,22 @@ func testPeek(t *testing.T) {
 
 	item, err := q.Peek()
 	require.Error(t, ErrorEmpty, err)
-	require.Equal(t, nil, item)
 
 	q.Add("test")
 	item, err = q.Peek()
-	require.Equal(t, nil, err)
+	require.NoError(t, nil)
 	require.Equal(t, "test", item)
 
 	q.Add(100)
 	item, err = q.Peek()
-	require.Equal(t, nil, err)
+	require.NoError(t, nil)
+	require.Equal(t, "test", item)
+	//queue: test,100
+	item, err = q.Remove()
+	require.NoError(t, nil)
 	require.Equal(t, "test", item)
 
-	err = q.Remove()
-	require.Equal(t, nil, err)
-
 	item, err = q.Peek()
-	require.Equal(t, nil, err)
+	require.NoError(t, nil)
 	require.Equal(t, 100, item)
 }

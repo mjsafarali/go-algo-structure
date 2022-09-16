@@ -30,7 +30,7 @@ func (q *Queue) Add(item interface{}) {
 	q.data = append(q.data, item)
 }
 
-// Peek will return first item in the queue
+// Peek will return first item in the queue without removing it
 func (q *Queue) Peek() (interface{}, error) {
 	q.lock.RLock()
 	defer q.lock.RUnlock()
@@ -42,16 +42,17 @@ func (q *Queue) Peek() (interface{}, error) {
 	return q.data[0], nil
 }
 
-// Remove will detach first item of queue
-func (q *Queue) Remove() error {
+// Remove will return first item of queue
+func (q *Queue) Remove() (interface{}, error) {
 	q.lock.Lock()
 	defer q.lock.Unlock()
 
 	if len(q.data) == 0 {
-		return ErrorEmpty
+		return nil, ErrorEmpty
 	}
 
+	item := q.data[0]
 	q.data = q.data[1:]
 
-	return nil
+	return item, nil
 }
